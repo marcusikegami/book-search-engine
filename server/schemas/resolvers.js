@@ -1,6 +1,6 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Book } = require('../models');
-const { AuthenticateToken, signToken } = require('../utils/auth');
+const { User } = require('../models');
+const { signToken } = require('../utils/auth');
 
 const resolvers = {
     Query: {
@@ -11,6 +11,9 @@ const resolvers = {
                  .populate('savedBooks');
 
                  return user;
+            }
+            if(!context) {
+                console.log('client context undefined');
             }
            
              throw new AuthenticationError('Please log in to view your saved books.');
