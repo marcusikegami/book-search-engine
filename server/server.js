@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 //import ApolloServer
 const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
@@ -16,6 +17,8 @@ const startServer = async () => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    // playground: true,
+    // introspection: true,
     context: authMiddleware
   });
   await server.start();
@@ -27,7 +30,7 @@ const startServer = async () => {
 };
 
 // Initialize Apollo server
-startServer();
+startServer()
 
 
 
@@ -37,7 +40,10 @@ app.use(express.json());
 
 // if we're in production, serve client/build as static assets
 if (process.env.NODE_ENV === 'production') {
+  console.log('running in production');
   app.use(express.static(path.join(__dirname, '../client/build')));
+} else {
+  console.log('running in development');
 }
 
 
