@@ -16,13 +16,14 @@ module.exports = {
     }
 
     if (!token) {
-      //  res.status(400).json({ message: 'You have no token!' });
+       console.log('no token');
        return req;
     }
 
     // verify token and get user data out of it
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
+      
       req.user = data;
     } catch {
       console.log('Invalid token');

@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from '@apollo/client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
 import { QUERY_ME } from '../utils/queries';
@@ -8,30 +8,43 @@ import Auth from '../utils/auth';
 
 const SavedBooks = () => {
   const [userData, setUserData] = useState({});
+  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
 
   // use this to determine if `useEffect()` hook needs to run again
-  // const userDataLength = Object.keys(userData).length;
-  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
-  const {loading, data} = useQuery(QUERY_ME);
-  console.log(data);
-  const user = data?.me || {};
-  console.log(user);
- 
-  if (!user?.username) {
-    return (
-      <h4>
-        You need to be logged in to see this. Use the navigation links above to
-        sign up or log in!
-      </h4>
-    );
-  }
+  const userDataLength = Object.keys(userData).length;
+  
+  debugger;
+  
+  const profile = Auth.getProfile();
+        const user = profile.data._id
+        console.log(user, 'hello');
+        const { loading, data } = useQuery(QUERY_ME);
+        console.log(data);
 
-   // if data isn't here yet, say so
-   if (loading) {
-    return <h2>LOADING...</h2>;
-  }
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-  setUserData(user);
+        if (!token) {
+          return false;
+        }
+
+        // debugger;
+        console.log(data);
+        const me = data?.me || {};
+        setUserData(me);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getUserData();
+  }, [userDataLength]);
+
+
+  
+
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -59,7 +72,10 @@ const SavedBooks = () => {
     }
   };
 
- 
+  // if data isn't here yet, say so
+  if (loading) {
+    return <h2>LOADING...</h2>;
+  }
 
   return (
     <>
@@ -70,10 +86,11 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {userData.savedBooks.length
+          {userData.savedBooks
             ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
+        {userData.savedbooks && (
         <CardColumns>
           {userData.savedBooks.map((book) => {
             return (
@@ -91,6 +108,7 @@ const SavedBooks = () => {
             );
           })}
         </CardColumns>
+        )}
       </Container>
     </>
   );

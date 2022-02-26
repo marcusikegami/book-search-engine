@@ -40,7 +40,7 @@ const SignupForm = () => {
         throw new add_user_error('add user error!');
       }
 
-      console.log(data.addUser);
+      
       Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);

@@ -11,6 +11,7 @@ const typeDefs = gql`
         title: String
     }
     type User {
+        _id: ID
         username: String
         email: String
         savedBooks: [Book]
