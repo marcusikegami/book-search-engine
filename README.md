@@ -1,6 +1,7 @@
 
 # book-search-engine
 
+![Screenshot of the password generator](https://github.com/marcusikegami/book-search-engine/blob/main/screenshot.png?raw=true)
 
 ## Table of Contents
 * [Description](#description)
