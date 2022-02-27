@@ -28,9 +28,5 @@ This software is intended to be used to find books using simple search queries a
 
 Please contact me via email with questions or concers regarding the application.
 
-## License
 
-  Copyright (c) 2022 by Marcus Ikegami
-  
-  Licensed under the [None](LICENSE.txt) license.
   
