@@ -13,6 +13,17 @@ const resolvers = {
 
                  return user;
             }
+            // if(user) {
+            //     const user = await User.findById(user)
+            //      .select('-__v -password')
+            //      .populate('savedBooks');
+
+            //      return user;
+            // }
+            // if(!context) {
+            //     console.log('client context defined');
+            //     console.log(context);
+            // }
            
              throw new AuthenticationError('Please log in to view your saved books.');
             
@@ -46,11 +57,12 @@ const resolvers = {
               
               return { token, user };
         },
-        saveBook: async (parent, {bookToSave}, context) => {
-            console.log(bookToSave);
+        saveBook: async (parent, args, context) => {
+            console.log(args);
+            const book = {...args}
             const user = await User.findOneAndUpdate(
-                { _id: context.user._id },
-                { $addToSet: { savedBooks: bookToSave } },
+                { username: context.user.username },
+                { $addToSet: { savedBooks: book } },
                 { new: true }
                 )
                 .select('-__v -password')

@@ -13,11 +13,7 @@ const SavedBooks = () => {
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
   
-  debugger;
   
-  const profile = Auth.getProfile();
-        const user = profile.data._id
-        console.log(user, 'hello');
         const { loading, data } = useQuery(QUERY_ME);
         console.log(data);
 
@@ -30,10 +26,9 @@ const SavedBooks = () => {
           return false;
         }
 
-        // debugger;
         console.log(data);
-        const me = data?.me || {};
-        setUserData(me);
+        const user = data?.me || {};
+        setUserData(user);
       } catch (err) {
         console.error(err);
       }
