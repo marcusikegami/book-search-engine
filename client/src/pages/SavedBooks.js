@@ -8,26 +8,23 @@ import { REMOVE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const SavedBooks = () => {
-  console.log('parent rerendered');
   const [userData, setUserData] = useState({});
   const [removeBook, { error }] = useMutation(REMOVE_BOOK);
 
     const userDataLength = Object.keys(userData).length;
 
         const { loading, data } = useQuery(QUERY_ME);
-        let queriedData;
+        
 useEffect(() => {
   const getUserData = async () => {
       if(data) {
-        console.log('querymedata:', data);
       const user = data?.me || {};
       setUserData(user);
-      queriedData = user;
-      }
+      
+    }
   };
     getUserData();
-  }, [queriedData, userDataLength, data, userData]);
-
+  }, [userDataLength, data, userData]);
 
   
 
@@ -49,7 +46,6 @@ useEffect(() => {
         throw new Error('something went wrong!');
       }
       if(data) {
-        console.log('removedata: ', data);
           const updatedUser = data?.removeBook || {};
           setUserData(updatedUser);
       } else {
@@ -67,7 +63,7 @@ useEffect(() => {
   if (loading) {
     return <h2>LOADING...</h2>;
   } else { 
-     queriedData = data.me;
+     const queriedData = data.me;
     return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>

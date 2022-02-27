@@ -40,7 +40,6 @@ const SearchBooks = () => {
 
     try {
       const response = await searchGoogleBooks(searchInput);
-      console.log(response);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
@@ -75,8 +74,6 @@ const SearchBooks = () => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
     setCurrentBookId(bookToSave.bookId);
-    console.log('current bookId: ', currentBookId);
-    console.log('Book to save: ', bookToSave);
     try{
       saveBook({
         variables: {...bookToSave}
