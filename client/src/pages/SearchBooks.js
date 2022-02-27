@@ -28,12 +28,7 @@ const SearchBooks = () => {
     return () => saveBookIds(savedBookIds);
   });
   
-  const [saveBook, { error }] = useMutation(SAVE_BOOK, {
-    onCompleted: (data) => {
-      console.log('data: ', data )
-      addBook(currentBookId);
-    }
-  });
+  const [saveBook, { error }] = useMutation(SAVE_BOOK);
 
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
@@ -71,8 +66,7 @@ const SearchBooks = () => {
     // find the book in `searchedBooks` state by the matching id
 
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-    // if book successfully saves to user's account, save book id to state
-    setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+    
 
   }
   // create function to handle saving a book to our database
@@ -80,24 +74,19 @@ const SearchBooks = () => {
     debugger;
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-    setCurrentBookId(bookId);
+    setCurrentBookId(bookToSave.bookId);
+    console.log('current bookId: ', currentBookId);
     console.log('Book to save: ', bookToSave);
     try{
-    // This mutation 'saveBook' is declared above as
-    // const [saveBook, { error }] = useMutation(SAVE_BOOK, {
-    //   onCompleted: (data) => {
-    //     console.log('data: ', data )
-    //     addBook(currentBookId);
-    //   }
-    // });
       saveBook({
-        variables: {bookToSave}
+        variables: {...bookToSave}
       });
         } catch (err) {
           console.log(err);
           console.log(error);
         }
-        
+        // if book successfully saves to user's account, save book id to state
+    setSavedBookIds([...savedBookIds, bookToSave.bookId]);
   };
 
   return (

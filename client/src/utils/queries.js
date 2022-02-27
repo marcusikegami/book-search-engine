@@ -12,7 +12,6 @@ query me {
       title
       description
       image
-      link
     }
   }
 }
